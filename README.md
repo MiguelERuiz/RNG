@@ -1,0 +1,2 @@
+# RNG
+prácticas de RNG
