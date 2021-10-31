@@ -1,0 +1,116 @@
+\documentclass{article}
+\usepackage{minted}
+\usepackage[spanish]{babel}
+\usepackage{hyperref}
+
+\begin{document}
+
+\tableofcontents
+
+\section{Configuración del fichero net.conf}
+\begin{minted}{bash}
+  redes@RED:~$ (nano|vim.tiny) net.conf # Tu editor favorito dentro de la VM
+  # NO deben repetirse las umlX.Y o de lo contrario, dará un error al lanzar el escenario
+  defsw br12 uml1.0 uml2.0 # configura la conexión entre dos interfaces
+  defsw net1 uml1.1 # configura la conexión para una sola interfaz
+  defsw br345 uml3.0 uml4.1 uml5.2 # configura la conexión para tres interfaces
+\end{minted}
+
+\section{Preparación del entorno}
+\begin{minted}{bash}
+  redes@RED:~$ sudo ifovsdel # borra las configuraciones previamente existentes
+  redes@RED:~$ sudo ifovsparse net.conf # configura las interfaces para lanzar el entorno
+  redes@RED:~$ uml{1..N} # crea un rango N de directorios `umlX'
+  redes@RED:~$ lanza {1..N} # crea las uml declaradas anteriormente
+\end{minted}
+
+\section{Iniciar sesión en una UML}
+\begin{minted}{bash}
+  uml1 login: root # entramos siempre como root
+  root@uml1# # A partir de aqui, estamos dentro de una sesión bash en la UML1
+\end{minted}
+
+\section{Acceder al shell de Quagga}
+\begin{minted}{bash}
+ root@uml1# vtysh
+ uml1# # Aqui ya estamos dentro de una sesión de Quagga
+\end{minted}
+
+\section{Acceder a la consola para introducir comandos de configuración}
+\begin{minted}{bash}
+ uml1# # Lo que está entre corchetes significa que es opcional
+ uml1# conf[igure] term[inal]
+ uml1(config)# ! Estamos dentro de la configuración de la UML
+\end{minted}
+
+\section{Acceder a una interfaz}
+\begin{minted}{lexer.py:IOSLexer -x}
+ uml1(config)# int[erface] eth0
+ uml1(config-if)# # Estamos dentro de la interfaz eth0
+\end{minted}
+
+\section{Añadir una IP a la interfaz}
+\begin{minted}{bash}
+ uml1(config-if)# ip address 10.0.0.1/24
+ uml1(config-if)# no shutdown # IMPORTANTE para que la interfaz quede levantada
+\end{minted}
+
+\section{Activar retransmisión de paquetesr}
+\begin{minted}{bash}
+ uml1(config)# # Lo que se le dice a la UML donde se ejecuta el siguiente
+ uml1(config)# # comando es que actúe como router (encaminador)
+ uml1(config)# ip forwarding
+\end{minted}
+
+\section{}
+\begin{minted}{bash}
+\end{minted}
+
+\section{}
+\begin{minted}{bash}
+\end{minted}
+
+\section{}
+\begin{minted}{bash}
+\end{minted}
+
+\section{}
+\begin{minted}{bash}
+\end{minted}
+
+\section{}
+\begin{minted}{bash}
+\end{minted}
+
+\section{}
+\begin{minted}{bash}
+\end{minted}
+
+\section{}
+\begin{minted}{bash}
+\end{minted}
+
+\section{Configurar los demonios de Quagga}
+\begin{minted}{bash}
+  root@uml1# (nano|vim.tiny) /etc/quagga/daemons # Accedemos a los demonios de Quagga
+\end{minted}
+
+\section{Reiniciar y comprobar los demonios activos de Quagga}
+\begin{minted}{bash}
+ root@uml1# systemctl restart quagga
+ root@uml1# systemctl status quagga
+\end{minted}
+
+\section{Atajos utiles de líneas de comandos}
+\begin{itemize}
+  \item Ctrl+a: Ir al inicio de la línea
+  \item Ctrl+e: Ir al final de la línea
+  \item Ctrl+w: Borra la palabra que está delante del cursor
+  \item Ctrl+\_: Deshace el último cambio (El Ctrl+z de toda la vida)
+\end{itemize}
+
+
+
+
+
+\end{document}
