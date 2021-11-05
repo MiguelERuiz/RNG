@@ -1,0 +1,7 @@
+*.swp
+*aux
+*log
+*lol
+*out
+*toc
+_minted-*/
