@@ -254,7 +254,8 @@ Configurar 5 máquinas virtuales para crear el siguiente AS:
  ospf router-id 0.0.0.2
  network 10.0.1.0/24 area 1
  network 10.0.2.0/24 area 0
- area 1 range 10.0.0.0/8 not-advertise ! No advierte de este area en otras areas por ser ABR
+ ! No advierte de este area en otras areas por ser ABR
+ area 1 range 10.0.0.0/8 not-advertise 
  end
  write
 \end{minted}
@@ -276,7 +277,8 @@ Configurar 5 máquinas virtuales para crear el siguiente AS:
  ospf router-id 0.0.0.4
  network 10.0.3.0/24 area 0
  network 10.0.4.0/24 area 2
- area 2 range 10.0.0.0/8 not-advertise ! No advierte de este area en otras areas por ser ABR
+ ! No advierte de este area en otras areas por ser ABR
+ area 2 range 10.0.0.0/8 not-advertise
  end
  write
 \end{minted}
