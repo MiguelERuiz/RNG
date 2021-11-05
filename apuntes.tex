@@ -31,6 +31,15 @@
   redes@RED:~$ lanza {1..N} # crea las uml declaradas anteriormente
 \end{minted}
 
+\section{Finalización del entorno}
+\begin{minted}{bash}
+  # Ejecuta un ctrl+alt+del en cada una de las UML (forma suave de matar las UML)
+  redes@RED:~$ for i in {1..N} ; do uml_mconsole uml$i cad; done
+  # Mata todos los subprocesos linux de golpe (forma dura de matar las UML)
+  # Es el último recurso a utilizar en caso de que el anterior comando no funcione
+  redes@RED:~$ pkill linux
+\end{minted}
+
 \section{Iniciar sesión en una UML}
 \begin{minted}{bash}
   uml1 login: root # entramos siempre como root
@@ -67,7 +76,7 @@
 \begin{minted}{lexer.py:IOSLexer -x}
  uml1(config)# # Lo que se le dice a la UML donde se ejecuta el siguiente
  uml1(config)# # comando es que actúe como router (encaminador)
- uml1(config)# ip forwarding
+ uml1(config)# ip[v6] forwarding
 \end{minted}
 
 \section{Anuncio de prefijo en IPv6}
@@ -78,36 +87,99 @@
  uml1(config-if)# no ipv6 nd suppress-ra
 \end{minted}
 
-
-
 \section{Guardar la configuración establecida}
 \begin{minted}{lexer.py:IOSLexer -x}
  uml1(config)# write ! Guarda toda la configuración
 \end{minted}
 
-%\section{}
-%\begin{minted}{bash}
-%\end{minted}
+\section{Zebra}
+\subsection{Interface Commands}
+\subsubsection{Standard Commands}
+\begin{minted}{lexer.py:IOSLexer -x}
+ !!! Estos comandos es necesario estar dentro de la interfaz
+ ! Apaga o levanta la interfaz
+ [no] shutdown
+ ! [no] ip[v6] a[ddress] ADDRESS/PREFIX
+\end{minted}
+
+\subsection{Zebra Terminal Mode Commands}
+\begin{minted}{lexer.py:IOSLexer -x}
+ ! Muestra las rutas actuales que almacena zebra en su base de datos
+ show ip[v6] route
+ ! Muestra información sobre la interfaz
+ show interface [INTERFACE] ! ej: eth0
+\end{minted}
+
 
 %\section{}
 %\begin{minted}{bash}
 %\end{minted}
 
-%\section{}
+%\section{RIP}
 %\begin{minted}{bash}
 %\end{minted}
 
-%\section{}
+%\section{RIPng}
 %\begin{minted}{bash}
 %\end{minted}
 
-%\section{}
-%\begin{minted}{bash}
-%\end{minted}
+\section{OSPFv2}
+\begin{minted}{bash}
+\end{minted}
 
-%\section{}
-%\begin{minted}{bash}
-%\end{minted}
+\section{OSPFv3}
+\subsection{Configuration}
+\begin{minted}{bash}
+ # Activar el demonio ospf6d en el fichero /etc/quagga/daemons
+ ~$ systemctl restart quagga
+ ~$ systemctl status quagga
+\end{minted}
+
+\subsection{Router}
+\begin{minted}{lexer.py:IOSLexer -x}
+ ! Acceder a la configuracion del router
+ router ospf6
+ ! Fijar un router-id
+ router-id a.b.c.d ! ej: 0.0.0.1
+ ! Bindea una interfaz a un area y comienza el envio de paquetes
+ interface ifname area a.b.c.d ! ej: interface eth0 area 0.0.0.1
+\end{minted}
+
+\subsection{Interface}
+\begin{minted}{lexer.py:IOSLexer -x}
+ !!! Estos comandos es necesario estar dentro de la interfaz
+
+ ! Establece coste de la interfaz. El valor por defecto depende
+ ! del ancho de banda de la interfaz y del coste del ancho de
+ ! banda de referencia
+ ipv6 opsf6 cost COST ! ej: 2
+ ! Establece coste del intervalo HELLO de la interfaz
+ ipv6 opsf6 hello-interval HELLOINTERVAL ! ej: 60
+ ! Establece intervalo Router Dead en la interfaz
+ ipv6 ospf6 dead-interval DEADINTERVAL ! ej: 240
+ ! Establece intervalo de retransmisión de la interfaz
+ ipv6 ospf6 retransmit-interval RETRANSMITINTERVAL ! ej: 5
+ ! Establece Router Priority de la interfaz
+ ipv6 opsf6 priority PRIORITY ! ej: 5
+ ! Establece Inf-Trans-Delay de la interfaz
+ ipv6 ospf6 transmit-delay TRANSMITDELAY ! ej: 1
+\end{minted}
+
+\subsection{Showing OSPF Information}
+\begin{minted}{lexer.py:IOSLexer -x}
+ ! Muestra info acerca de OSPFv3 de la UML
+ show ipv6 ospf6 [INSTANCE_ID]
+ ! Muestra el resumen de la base de datos LSA
+ show ipv6 ospf6 database
+ ! Muestra la configuracion de la interfaz OSPF
+ show ipv6 ospf6 interface
+ ! Muestra el estado y el backup del vecino
+ show ipv6 ospf6 neighbor
+ ! Muestra la request-list del vecino
+ show ipv6 ospf6 request-list A.B.C.D
+ ! Muestra la tabla de rutas interna
+ show ipv6 route ospf6
+\end{minted}
 
 \section{Configurar los demonios de Quagga}
 \begin{minted}{bash}
