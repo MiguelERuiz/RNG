@@ -1,14 +1,9 @@
-TARGET=apuntes.tex
-PDF=apuntes.pdf
 
-all: 
-	compile
-	view
+default: compile
 
+compile:
+	latexmk -pdf
 
-compile: 
-	pdflatex -shell-escape $(TARGET)
-
-view: 
-	evince $(PDF) &
-
+clean:
+	rm -rf _minted-*/
+	latexmk -c
