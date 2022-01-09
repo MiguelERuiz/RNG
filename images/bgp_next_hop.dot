@@ -1,0 +1,41 @@
+digraph G {
+  compound=true
+  rankdir=LR;
+  node [style=filled, color=deepskyblue, shape=circle, width=1.2];
+  subgraph cluster_0 {
+    style=rounded;
+    bgcolor=gold;
+    subgraph cluster_01 {
+      style=dotted;
+      color=blue;
+      R1 -> R2 [constraint=false, arrowhead=none, label="10.0.12.0/24"];
+      label = "area 1";
+    }
+    label = "AS65512";
+  }
+
+  subgraph cluster_1 {
+    style=rounded;
+    bgcolor=darksalmon;
+    subgraph cluster_12 {
+      style=dotted;
+      color=blue;
+      R3 -> R4 [constraint=false, arrowhead=none, label="10.0.34.0/24"];
+      label = "area 2";
+    }
+    label = "AS65513";
+  }
+
+  subgraph cluster_2 {
+    style=rounded;
+    bgcolor=darkslategray1;
+    node [style=filled, color=deepskyblue];
+    R5;
+    label = "AS65514";
+  }
+  R1 -> R3 [penwidth=5, arrowhead=none, label="10.0.13.0/24"];
+  R2 -> R4 [arrowhead=none, label="10.0.24.0/24"];
+  R3 -> R5 [penwidth=5, arrowhead=none, label="10.0.35.0/24"];
+  R4 -> R5 [arrowhead=none, label="10.0.45.0/24"];
+
+}

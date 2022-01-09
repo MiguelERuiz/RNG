@@ -78,7 +78,7 @@ Dado el siguiente escenario:
  int eth1
  ipv6 address 2001:db8:2::1/64
  ipv6 nd prefix 2001:db8:2::/64 ! Para que anuncie su prefijo a UML5
- no ipv6 nd suppress-ra 
+ no ipv6 nd suppress-ra
  quit
  ip route 0.0.0.0/0 192.168.34.2
  ipv6 forwarding
@@ -131,7 +131,7 @@ Configurar 5 máquinas virtuales para crear el siguiente AS:
   defsw br34 uml3.1 uml4.0
   defsw br45 uml4.1 uml5.0
   defsw net3 uml5.1
-  defsw net4 uml5.2 
+  defsw net4 uml5.2
 \end{minted}
 
 \begin{minted}{bash}
@@ -255,7 +255,7 @@ Configurar 5 máquinas virtuales para crear el siguiente AS:
  network 10.0.1.0/24 area 1
  network 10.0.2.0/24 area 0
  ! No advierte de este area en otras areas por ser ABR
- area 1 range 10.0.0.0/8 not-advertise 
+ area 1 range 10.0.0.0/8 not-advertise
  end
  write
 \end{minted}
@@ -480,6 +480,10 @@ Configurar 5 máquinas virtuales para crear el siguiente AS:
  interface eth2 area 0.0.0.2
 \end{minted}
 
-
+\section{BGP, OSPFv2 y OSPFv3}
+Configurar como principales los enlaces marcados:
+\begin{figure}[h]
+  \includegraphics[width=12cm]{bgp_next_hop.png}
+\end{figure}
 \end{document}
 
