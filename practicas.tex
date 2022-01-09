@@ -480,14 +480,41 @@ Configurar 5 máquinas virtuales para crear el siguiente AS:
  interface eth2 area 0.0.0.2
 \end{minted}
 
-\section{BGP, OSPFv2 y OSPFv3}
+\newpage
+
+\section{BGP. Filtrado de rutas}
+
+  Dada la siguiente topología:
+  \begin{figure}[h]
+    \includegraphics[width=\textwidth]{route-map.png}
+  \end{figure}
+
+  \begin{itemize}
+    \item El AS65514 desea usar preferentemente su enlace con AS65515,
+    y mantener los otros dos como respaldo (backup)
+    \item Implementar esa política mediante el uso de \texttt{route-map} .
+  \end{itemize}
+
+  Detalles a tener en cuenta:
+
+  \begin{itemize}
+    \item Redes de usuario:
+    \begin{itemize}
+      \item IPv4: 172.16.X.0/24
+      \item IPv6: 2001:db8:X::/64
+    \end{itemize}
+  \end{itemize}
+
+  \[ \forall X \in \{12,13,14,15,16\} \]
+
+\section{BGP y OSPFv2}
   Configurar como principales los enlaces marcados:
   \begin{figure}[h]
     \includegraphics[width=12cm]{bgp_next_hop.png}
   \end{figure}
-  
+
   Detalles a tener en cuenta:
-  
+
   \begin{itemize}
     \item Las interfaces entre los nodos R1 - R3 y R2 - R4 han de ser pasivas
     \item La comunicación entre routeres del mismo AS es mediante iBGP/OSPF
@@ -510,7 +537,7 @@ Configurar 5 máquinas virtuales para crear el siguiente AS:
     defsw br45 uml4.2 uml5.0
     defsw br35 uml3.2 uml5.1
   \end{minted}
-  
+
   \begin{minted}{bash}
   # En cuanto se inician las UML1-4, editar el fichero /etc/quagga/daemons la línea
   bgpd=no
@@ -524,7 +551,7 @@ Configurar 5 máquinas virtuales para crear el siguiente AS:
   # Verificar que se ospfd está corriendo
   systemctl status quagga
 \end{minted}
-  
+
   \begin{minted}{lexer.py:IOSLexer -x}
     ! UML1 (zebra.conf)
     conf[igure] term[inal]
@@ -540,7 +567,7 @@ Configurar 5 máquinas virtuales para crear el siguiente AS:
     exit
     write
   \end{minted}
-  
+
   \begin{minted}{lexer.py:IOSLexer -x}
     ! UML2 (zebra.conf)
     conf[igure] term[inal]
@@ -575,7 +602,7 @@ Configurar 5 máquinas virtuales para crear el siguiente AS:
     exit
     write
   \end{minted}
-  
+
   \begin{minted}{lexer.py:IOSLexer -x}
     ! UML4 (zebra.conf)
     conf[igure] term[inal]
@@ -594,7 +621,7 @@ Configurar 5 máquinas virtuales para crear el siguiente AS:
     exit
     write
   \end{minted}
-  
+
   \begin{minted}{lexer.py:IOSLexer -x}
     ! UML5 (zebra.conf)
     conf[igure] term[inal]
@@ -610,7 +637,7 @@ Configurar 5 máquinas virtuales para crear el siguiente AS:
     exit
     write
   \end{minted}
-  
+
   \begin{minted}{lexer.py:IOSLexer -x}
     ! UML1 (ospf.conf)
     conf[igure] term[inal]
@@ -622,7 +649,7 @@ Configurar 5 máquinas virtuales para crear el siguiente AS:
     end
     write
   \end{minted}
-  
+
   \begin{minted}{lexer.py:IOSLexer -x}
     ! UML2 (ospf.conf)
     conf[igure] term[inal]
@@ -647,7 +674,7 @@ Configurar 5 máquinas virtuales para crear el siguiente AS:
     end
     write
   \end{minted}
-  
+
   \begin{minted}{lexer.py:IOSLexer -x}
     ! UML4 (ospf.conf)
     conf[igure] term[inal]
@@ -660,7 +687,7 @@ Configurar 5 máquinas virtuales para crear el siguiente AS:
     end
     write
   \end{minted}
-  
+
   \begin{minted}{lexer.py:IOSLexer -x}
     ! UML1 (bgp.conf)
     con[figure] t[erminal]
@@ -673,7 +700,7 @@ Configurar 5 máquinas virtuales para crear el siguiente AS:
       se[t] l[ocal-preference] 200
     do write
   \end{minted}
-  
+
   \begin{minted}{lexer.py:IOSLexer -x}
     ! UML2 (bgp.conf)
     con[figure] t[erminal]
@@ -682,7 +709,7 @@ Configurar 5 máquinas virtuales para crear el siguiente AS:
     nei[ghbor] 10.0.12.1 remote-as 65512
     do write
   \end{minted}
-  
+
   \begin{minted}{lexer.py:IOSLexer -x}
     ! UML3 (bgp.conf)
     con[figure] t[erminal]
@@ -696,7 +723,7 @@ Configurar 5 máquinas virtuales para crear el siguiente AS:
       se[t] l[ocal-preference] 200
     do write
   \end{minted}
-  
+
   \begin{minted}{lexer.py:IOSLexer -x}
     ! UML4 (bgp.conf)
     con[figure] t[erminal]
@@ -706,7 +733,7 @@ Configurar 5 máquinas virtuales para crear el siguiente AS:
     nei[ghbor] 10.0.34.1 remote-as 65513
     do write
   \end{minted}
-  
+
   \begin{minted}{lexer.py:IOSLexer -x}
     ! UML5 (bgp.conf)
     con[figure] t[erminal]
@@ -726,9 +753,10 @@ Configurar 5 máquinas virtuales para crear el siguiente AS:
   \end{minted}
 
   \begin{itemize}
-    \item Probar a cambiar el router que anuncia la network para comprobar\
+    \item Probar a cambiar el router que anuncia la network para comprobar
     que las rutas BGP son acordes a las políticas aplicadas
   \end{itemize}
+
 \end{document}
 
 
