@@ -9,7 +9,7 @@ digraph G {
       style=dotted;
       color=blue;
       R1 -> R2 [constraint=false, arrowhead=none, label="10.0.12.0/24"];
-      label = "area 1";
+      label = "area 0";
     }
     label = "AS65512";
   }
@@ -21,7 +21,7 @@ digraph G {
       style=dotted;
       color=blue;
       R3 -> R4 [constraint=false, arrowhead=none, label="10.0.34.0/24"];
-      label = "area 2";
+      label = "area 1";
     }
     label = "AS65513";
   }
