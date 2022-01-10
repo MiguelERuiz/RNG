@@ -17,7 +17,7 @@ Comprobar las tablas de rutas y los mensajes intercambiados
     defsw net4 uml4.0
     defsw net3 uml3.0
   \end{minted}
-  
+
   \begin{minted}{bash}
     # En cuanto se inician las UML, editar el fichero /etc/quagga/daemons la línea
     ripngd=no
@@ -28,7 +28,7 @@ Comprobar las tablas de rutas y los mensajes intercambiados
     # Verificar que se ospfd está corriendo
     systemctl status quagga
 \end{minted}
-  
+
   \begin{minted}{lexer.py:IOSLexer -x}
     ! UML1 (zebra.conf)
     con[figure] t[erminal]
@@ -42,7 +42,7 @@ Comprobar las tablas de rutas y los mensajes intercambiados
     ipv6 f[orwarding]
     w[rite]
   \end{minted}
-  
+
   \begin{minted}{lexer.py:IOSLexer -x}
     ! UML2 (zebra.conf)
     int[erface] eth0
@@ -55,7 +55,7 @@ Comprobar las tablas de rutas y los mensajes intercambiados
     no s[hutdown]
     q[uit]
   \end{minted}
-  
+
   \begin{minted}{lexer.py:IOSLexer -x}
     ! UML3 (zebra.conf)
     con[figure] t[erminal]
@@ -69,7 +69,7 @@ Comprobar las tablas de rutas y los mensajes intercambiados
     ipv6 f[orwarding]
     w[rite]
   \end{minted}
-  
+
   \begin{minted}{lexer.py:IOSLexer -x}
     ! UML4 (zebra.conf)
     con[figure] t[erminal]
@@ -83,7 +83,7 @@ Comprobar las tablas de rutas y los mensajes intercambiados
     ipv6 f[orwarding]
     w[rite]
   \end{minted}
-  
+
   \begin{minted}{lexer.py:IOSLexer -x}
     ! UML1 (ripngd.conf)
     con[figure] t[erminal]
@@ -94,7 +94,7 @@ Comprobar las tablas de rutas y los mensajes intercambiados
       passive-interface fe80::/64
       do w[rite]
   \end{minted}
-  
+
   \begin{minted}{lexer.py:IOSLexer -x}
     ! UML2 (ripngd.conf)
     con[figure] t[erminal]
@@ -103,7 +103,7 @@ Comprobar las tablas de rutas y los mensajes intercambiados
       passive-interface fe80::/64
       do w[rite]
   \end{minted}
-  
+
   \begin{minted}{lexer.py:IOSLexer -x}
     ! UML3 (ripngd.conf)
     con[figure] t[erminal]
@@ -114,7 +114,7 @@ Comprobar las tablas de rutas y los mensajes intercambiados
       passive-interface fe80::/64
       do w[rite]
   \end{minted}
-  
+
   \begin{minted}{lexer.py:IOSLexer -x}
     ! UML4 (ripngd.conf)
     con[figure] t[erminal]
@@ -125,7 +125,7 @@ Comprobar las tablas de rutas y los mensajes intercambiados
       passive-interface fe80::/64
       do w[rite]
   \end{minted}
-  
+
   Pruebas:
   \begin{minted}{lexer.py:IOSLexer -x}
     sh[ow] ipv6 rip

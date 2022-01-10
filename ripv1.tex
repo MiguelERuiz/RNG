@@ -17,7 +17,7 @@ Comprobar las tablas de rutas y los mensajes intercambiados
     defsw net4 uml4.1
     defsw net3 uml3.1
   \end{minted}
-  
+
   \begin{minted}{bash}
   # En cuanto se inician las UML, editar el fichero /etc/quagga/daemons la línea
   ripd=no
@@ -28,7 +28,7 @@ Comprobar las tablas de rutas y los mensajes intercambiados
   # Verificar que se ospfd está corriendo
   systemctl status quagga
 \end{minted}
-  
+
   \begin{minted}{lexer.py:IOSLexer -x}
     ! UML1 (zebra.conf)
     con[figure] t[erminal]
@@ -44,7 +44,7 @@ Comprobar las tablas de rutas y los mensajes intercambiados
     end
     w[rite]
   \end{minted}
-  
+
   \begin{minted}{lexer.py:IOSLexer -x}
     ! UML1 (zebra.conf)
     con[figure] t[erminal]
@@ -60,7 +60,7 @@ Comprobar las tablas de rutas y los mensajes intercambiados
     end
     w[rite]
   \end{minted}
-  
+
   \begin{minted}{lexer.py:IOSLexer -x}
     ! UML2 (zebra.conf)
     con[figure] t[erminal]
@@ -80,7 +80,7 @@ Comprobar las tablas de rutas y los mensajes intercambiados
     end
     w[rite]
   \end{minted}
-  
+
   \begin{minted}{lexer.py:IOSLexer -x}
     ! UML3 (zebra.conf)
     con[figure] t[erminal]
@@ -96,7 +96,7 @@ Comprobar las tablas de rutas y los mensajes intercambiados
     end
     w[rite]
   \end{minted}
-  
+
   \begin{minted}{lexer.py:IOSLexer -x}
     ! UML4 (zebra.conf)
     con[figure] t[erminal]
@@ -112,7 +112,7 @@ Comprobar las tablas de rutas y los mensajes intercambiados
     end
     w[rite]
   \end{minted}
-  
+
   \begin{minted}{lexer.py:IOSLexer -x}
     ! UML1 (ripd.conf)
     con[figure] t[erminal]
@@ -124,7 +124,7 @@ Comprobar las tablas de rutas y los mensajes intercambiados
       passive-interface eth1
       do w[rite]
   \end{minted}
-  
+
   \begin{minted}{lexer.py:IOSLexer -x}
     ! UML2 (ripd.conf)
     con[figure] t[erminal]
@@ -140,7 +140,7 @@ Comprobar las tablas de rutas y los mensajes intercambiados
       passive-interface eth2
       do w[rite]
   \end{minted}
-  
+
   \begin{minted}{lexer.py:IOSLexer -x}
     ! UML3 (ripd.conf)
     con[figure] t[erminal]
@@ -152,7 +152,7 @@ Comprobar las tablas de rutas y los mensajes intercambiados
       passive-interface eth1
       do w[rite]
   \end{minted}
-  
+
   \begin{minted}{lexer.py:IOSLexer -x}
     ! UML4 (ripd.conf)
     con[figure] t[erminal]
@@ -164,7 +164,7 @@ Comprobar las tablas de rutas y los mensajes intercambiados
       passive-interface eth1
       do w[rite]
   \end{minted}
-  
+
   Pruebas:
   \begin{minted}{lexer.py:IOSLexer -x}
     sh[ow] ip rip
