@@ -20,8 +20,8 @@ Dada la siguiente topología:
   \end{itemize}
 
   \[ \forall X \in \{12,13,14,15,16\} \]
-  
-  
+
+
   \begin{minted}{bash}
     # net.conf
     defsw br23 uml2.0 uml3.0
@@ -31,7 +31,7 @@ Dada la siguiente topología:
     defsw br26 uml2.1 uml6.0
     defsw br46 uml4.2 uml6.1
   \end{minted}
-  
+
   \begin{minted}{bash}
     # En cuanto se inician las UML, editar el fichero /etc/quagga/daemons la línea
     bgpd=no
@@ -42,7 +42,7 @@ Dada la siguiente topología:
     # Verificar que se bgpd está corriendo
     systemctl status quagga
   \end{minted}
-  
+
   \begin{minted}{lexer.py:IOSLexer -x}
     ! UML2 (zebra.conf)
     con[figure] t[erminal]
@@ -57,7 +57,7 @@ Dada la siguiente topología:
     ip f[orwarding]
     write
   \end{minted}
-  
+
   \begin{minted}{lexer.py:IOSLexer -x}
     ! UML3 (zebra.conf)
     con[figure] t[erminal]
@@ -76,7 +76,7 @@ Dada la siguiente topología:
     ip f[orwarding]
     write
   \end{minted}
-  
+
   \begin{minted}{lexer.py:IOSLexer -x}
     ! UML4 (zebra.conf)
     con[figure] t[erminal]
@@ -95,7 +95,7 @@ Dada la siguiente topología:
     ip f[orwarding]
     write
   \end{minted}
-  
+
   \begin{minted}{lexer.py:IOSLexer -x}
     ! UML5 (zebra.conf)
     con[figure] t[erminal]
@@ -110,7 +110,7 @@ Dada la siguiente topología:
     ip f[orwarding]
     write
   \end{minted}
-  
+
   \begin{minted}{lexer.py:IOSLexer -x}
     ! UML6 (zebra.conf)
     con[figure] t[erminal]
@@ -123,7 +123,7 @@ Dada la siguiente topología:
     ip f[orwarding]
     write
   \end{minted}
-  
+
   \begin{minted}{lexer.py:IOSLexer -x}
     ! UML2 (bgpd.conf)
     con[figure] t[erminal]
@@ -135,7 +135,7 @@ Dada la siguiente topología:
       neighbor 10.0.23.2 remote-as 65513
       neighbor 10.0.26.2 remote-as 65516
       ! To enter address family configuration mode for configuring routing sessions,
-      ! such as BGP, that use standard IPv6 address prefixes, 
+      ! such as BGP, that use standard IPv6 address prefixes,
       ! use the address-family ipv6 command in router configuration mode
       address-family ipv6
       ! La red IPv4 que se anuncia en los mensajes BGP que se intercambian
@@ -145,7 +145,7 @@ Dada la siguiente topología:
       exit-address-family
       do w[rite]
   \end{minted}
-  
+
   \begin{minted}{lexer.py:IOSLexer -x}
     ! UML3 (bgpd.conf)
     con[figure] t[erminal]
@@ -163,7 +163,7 @@ Dada la siguiente topología:
       exit-address-family
       do w[rite]
   \end{minted}
-  
+
   \begin{minted}{lexer.py:IOSLexer -x}
     !!!! TODO AÑADIR EXPLICACIONES !!!!
     ! UML4 (bgpd.conf)
@@ -193,7 +193,7 @@ Dada la siguiente topología:
     !
       do w[rite]
   \end{minted}
-  
+
   \begin{minted}{lexer.py:IOSLexer -x}
     ! UML5 (bgpd.conf)
     con[figure] t[erminal]
@@ -211,7 +211,7 @@ Dada la siguiente topología:
     !
       do w[rite]
   \end{minted}
-  
+
   \begin{minted}{lexer.py:IOSLexer -x}
     ! UML6 (bgpd.conf)
     con[figure] t[erminal]
@@ -228,4 +228,13 @@ Dada la siguiente topología:
       exit-address-family
     !
       do w[rite]
+  \end{minted}
+
+  Pruebas:
+  \begin{minted}{lexer.py:IOSLexer -x}
+    ! En una UML
+    clear bgp * ! se borra toda la información BGP de las tablas de todos los routeres
+    ! En cada uno de los nodos
+    ! Comprobar que pasar por el AS 65514 tiene un sobrecoste adicional por el prepend
+    sh[ow] ip bgp
   \end{minted}
