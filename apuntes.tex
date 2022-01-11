@@ -193,7 +193,7 @@
  ! Agrega o desagrega rutas inter-área (solo válido para ABR)
  [no] area a.b.c.d range a.b.c.d/m ! Un ejemplo en la práctica de OSPFv2
  ! Define o elimina un área stub
- [no] area a.b.c.d sub [no-summary] 
+ [no] area a.b.c.d sub [no-summary]
 \end{minted}
 
 \subsection{Showing OSPF Information}
@@ -262,6 +262,118 @@
  show ipv6 ospf6 request-list A.B.C.D
  ! Muestra la tabla de rutas interna
  show ipv6 route ospf6
+\end{minted}
+
+\section{BGP}
+\subsection{Start BGPd}
+\begin{minted}{bash}
+  # Activar el demonio bgpd en el fichero /etc/quagga/daemons
+  ~$ systemctl restart quagga
+  ~$ systemctl status quagga
+\end{minted}
+
+\subsection{BGP Router}
+\begin{minted}{lexer.py:IOSLexer -x}
+  ! [Des]habilita el proceso del protocolo BGP con el ASN especificado
+  [no] router bgp asn ! ej: 65512
+  ! Especifica el router-id (Identificador BGP)
+  bgp router-id A.B.C.D ! ej: 10.0.0.1
+\end{minted}
+
+\subsection{BGP network}
+\begin{minted}{lexer.py:IOSLexer -x}
+  ! Añade/quita un anuncio BGP explícito
+  [no] network A.B.C.D/M ! ej: 10.0.0.0/8
+  ! Route aggregation
+  !! Añade/quita un agregado de ruta
+  [no] aggregate-address A.B.C.D/M ! ej: 192.168.0.0/16
+\end{minted}
+
+\subsection{Inyección de protocolos}
+\begin{minted}{lexer.py:IOSLexer -x}
+  ! Redistribuye RIP | OSPF al proceso BGP
+  redistribute rip | ospf
+\end{minted}
+
+\subsection{Definición de vecinos}
+\begin{minted}{lexer.py:IOSLexer -x}
+  ! Crea/elimina un nuevo vecino cuyo ``remote-as'' es asn.
+  ! peer puede ser una dirección IPv4 o IPv6
+  [no] neighbor peer remote-as asn ! ej: neighbor 10.0.0.2 remote-as 65513
+  ! Especifica la interfaz cuando el vecino está conectado por
+  ! una dirección IPv6 de enlace local
+  neighbor peer interface ifname ! ej: neighbor fe80::ff:fe00:1f0 interface eth0
+\end{minted}
+
+\newpage
+
+\subsection{Filtrado de rutas}
+  The \textbf{distribute-list} and \textbf{prefix-list} perform route filtering
+  based on IP network addresses and netmasks of routes being advertised. The
+  \textbf{distribute-list} refers to an ACL to match the individual networks and
+  netmasks, while \textbf{prefix-list} refers to a prefix list to do this matching.
+  In fact, the use of distribute-list and \textbf{prefix-list} for a particular
+  BGP neighbor in a particular direction (in or out) is mutually exclusive,
+  because they both accomplish the very same goal, just using a different
+  route selection/filtering mechanism (an ACL vs. a prefix list).
+  It is generally better to use prefix lists instead of ACLs - they are much
+  more cleaner and more comprehensible, optimized to match networks/netmasks
+  and subnets thereof.
+
+  The \textbf{filter-list} performs route filtering based on the contents of the
+  AS\_PATH attribute - the sequence and values of atonomous system numbers.
+  To do this, you would configure an as-path ACL that contains one or more
+  regular expressions matching the particular sequence of ASNs in the AS\_PATH
+  attribute, and apply it to a neighbor and a particular direction with the
+  \textbf{filter-list} command. With a \textbf{filter-list}, you do not perform
+  route matching/filtering based on IP addresses and netmasks.
+
+\begin{minted}{lexer.py:IOSLexer -x}
+  ! Filtrado de prefijos
+  ! ej: neighbor fe80::ff:fe00:1f0 prefix-list peer-out out
+  neighbor peer prefix-list name [in|out]
+  neighbor peer distribute-list name [in|out]
+  ! ej: neighbor 10.0.0.1 route-map internal-rtm out
+  neighbor peer route-map name [in|out]
+\end{minted}
+
+\subsection{AS\_PATH: Regex}
+\begin{minted}{bash}
+  . Cualquier carácter.
+  * 0 o más apariciones del patrón.
+  + 1 o más apariciones del patrón.
+  ? 0 ó 1 apariciones del patrón.
+  ^ Comienzo de línea.
+  $ Final de línea.
+  _ Concuerda con el espacio y la coma, así como con el
+  delimitador de conjunto de ASN { y }, y con el delimitador
+  de confederación ( y ). También concuerda con el principio
+  y final de línea.
+\end{minted}
+
+\subsection{Muestra Rutas BGP por el AS\_PATH}
+\begin{minted}{lexer.py:IOSLexer -x}
+  ! muestra todas las rutas BGP que contienen el ASN 1180
+  show ip bgp regexp _1180_
+\end{minted}
+
+\subsection{AS Path Access List}
+\begin{minted}{lexer.py:IOSLexer -x}
+! Define una nueva lista de acceso
+ip as-path access-list word {permit|deny} line
+! Ejemplos con explicación
+! n1 sólo permite rutas originadas en el AS100.
+ip as-path access-list n1 permit _100$
+! n2 sólo permite rutas que pasen por AS102.
+ip as-path access-list n2 permit _102_
+! n3 prohíbe todas las rutas que pasen (o provengan) de AS105.
+ip as-path access-list n3 deny _105_
+ip as-path access-list n3 permit .*
+\end{minted}
+
+\subsection{Verifica las rutas anunciadas por BGP}
+\begin{minted}{lexer.py:IOSLexer -x}
+  show ip bgp
 \end{minted}
 
 \section{Configurar los demonios de Quagga}
