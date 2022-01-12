@@ -165,17 +165,19 @@ Dada la siguiente topología:
   \end{minted}
 
   \begin{minted}{lexer.py:IOSLexer -x}
-    !!!! TODO AÑADIR EXPLICACIONES !!!!
     ! UML4 (bgpd.conf)
     con[figure] t[erminal]
     router bgp 65514
       bgp router-id 10.0.46.1
       network 172.16.4.0/24
       neighbor 10.0.34.1 remote-as 65513
+      ! Añade una politica de route-map de salida
       neighbor 10.0.34.1 route-map backup out
       neighbor 10.0.45.2 remote-as 65515
+      ! Añade una politica de route-map de entrada
       neighbor 10.0.45.2 route-map preferente in
       neighbor 10.0.46.2 remote-as 65516
+      ! Añade una politica de route-map de salida
       neighbor 10.0.46.2 route-map backup out
     !
       address-family ipv6
@@ -186,9 +188,14 @@ Dada la siguiente topología:
       exit-address-family
     !
       route-map preferente permit 10
+      ! Establece un local-preference para
+      ! que la ruta tenga mayor preferencia que otra
       set local-preference 200
     !
       route-map backup permit 10
+      ! Realiza un prepend del identificador
+      ! para asegurar que la ruta tiene menor
+      ! preferencia que la anterior
       set as-path prepend 65514 65514 65514 65514 65514 65514 65514
     !
       do w[rite]
