@@ -1,0 +1,185 @@
+Configurar 5 máquinas virtuales para crear el siguiente AS:
+
+\includegraphics[width=\textwidth]{ospfv2}
+
+\begin{minted}{bash}
+  # net.conf
+  defsw br12 uml1.0 uml2.0
+  defsw net1 uml1.1
+  defsw net2 uml1.2
+  defsw br23 uml2.1 uml3.0
+  defsw br34 uml3.1 uml4.0
+  defsw br45 uml4.1 uml5.0
+  defsw net3 uml5.1
+  defsw net4 uml5.2
+\end{minted}
+
+\begin{minted}{bash}
+  # En cuanto se inician las UML, editar el fichero /etc/quagga/daemons la línea
+  ospfd=no
+  # Por
+  ospfd=yes
+  # A continuación restart del servicio
+  systemctl restart quagga
+  # Verificar que se ospfd está corriendo
+  systemctl status quagga
+\end{minted}
+
+\begin{minted}{lexer.py:IOSLexer -x}
+ ! UML1 (zebra.conf)
+ conf[igure] term[inal]
+ int[erface] eth0
+ ip address 10.0.1.1/24
+ no shutdown
+ quit
+ int[erface] eth1
+ ip address 192.168.3.1/24
+ no shutdown
+ quit
+ int[erface] eth2
+ ip address 192.168.2.1/24
+ no shutdown
+ quit
+ ip forwarding
+ exit
+ write
+\end{minted}
+\begin{minted}{lexer.py:IOSLexer -x}
+ ! UML2 (zebra.conf)
+ conf[igure] term[inal]
+ int[erface] eth0
+ ip address 10.0.1.2/24
+ no shutdown
+ quit
+ int[erface] eth1
+ ip address 10.0.2.2/24
+ no shutdown
+ quit
+ ip forwarding
+ exit
+ write
+\end{minted}
+
+\begin{minted}{lexer.py:IOSLexer -x}
+ ! UML3 (zebra.conf)
+ conf[igure] term[inal]
+ int[erface] eth0
+ ip address 10.0.2.1/24
+ no shutdown
+ quit
+ int[erface] eth1
+ ip address 10.0.3.1/24
+ no shutdown
+ quit
+ ip forwarding
+ exit
+ write
+\end{minted}
+
+\begin{minted}{lexer.py:IOSLexer -x}
+ ! UML4 (zebra.conf)
+ conf[igure] term[inal]
+ int[erface] eth0
+ ip address 10.0.3.2/24
+ no shutdown
+ quit
+ int[erface] eth1
+ ip address 10.0.4.2/24
+ no shutdown
+ quit
+ ip forwarding
+ exit
+ write
+\end{minted}
+
+\begin{minted}{lexer.py:IOSLexer -x}
+ ! UML5 (zebra.conf)
+ conf[igure] term[inal]
+ int[erface] eth0
+ ip address 10.0.4.1/24
+ no shutdown
+ quit
+ int[erface] eth1
+ ip address 192.168.4.1/24
+ no shutdown
+ quit
+ int[erface] eth2
+ ip address 192.168.5.1/24
+ no shutdown
+ quit
+ ip forwarding
+ exit
+ write
+\end{minted}
+
+\begin{minted}{lexer.py:IOSLexer -x}
+ ! UML1 ospf.conf
+ conf[igure] term[inal]
+ router ospf
+ ospf router-id 0.0.0.1
+ network 10.0.1.0/24 area 1
+ network 192.168.2.0/24 area 1
+ network 192.168.3.0/24 area 1
+ area 1 stub
+ passive-interface eth1 ! Las redes de usuario irán siempre como passive-interface
+ passive-interface eth2
+ end
+ write
+\end{minted}
+
+\begin{minted}{lexer.py:IOSLexer -x}
+ ! UML2 ospf.conf
+ conf[igure] term[inal]
+ router ospf
+ ospf router-id 0.0.0.2
+ network 10.0.1.0/24 area 1
+ network 10.0.2.0/24 area 0
+ ! No advierte de este area en otras areas por ser ABR
+ area 1 range 10.0.0.0/8 not-advertise
+ end
+ write
+\end{minted}
+
+\begin{minted}{lexer.py:IOSLexer -x}
+ ! UML3 ospf.conf
+ conf[igure] term[inal]
+ router ospf
+ ospf router-id 0.0.0.3
+ network 10.0.2.0/24 area 0
+ network 10.0.3.0/24 area 0
+
+\end{minted}
+
+\begin{minted}{lexer.py:IOSLexer -x}
+ ! UML4 ospf.conf
+ conf[igure] term[inal]
+ router ospf
+ ospf router-id 0.0.0.4
+ network 10.0.3.0/24 area 0
+ network 10.0.4.0/24 area 2
+ ! No advierte de este area en otras areas por ser ABR
+ area 2 range 10.0.0.0/8 not-advertise
+ end
+ write
+\end{minted}
+
+\begin{minted}{lexer.py:IOSLexer -x}
+ ! UML5 ospf.conf
+ conf[igure] term[inal]
+ router ospf
+ ospf router-id 0.0.0.5
+ network 10.0.4.0/24 area 2
+ network 192.168.4.0/24 area 2
+ network 192.168.5.0/24 area 2
+ area 2 stub
+ passive-interface eth1 ! Las redes de usuario irán siempre como passive-interface
+ passive-interface eth2
+ end
+ write
+\end{minted}
+
+Comprobar las tablas de ospf con el comando
+
+\begin{minted}{lexer.py:IOSLexer -x}
+ show ip ospf database
+\end{minted}
